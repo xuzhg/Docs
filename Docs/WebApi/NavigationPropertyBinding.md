@@ -8,6 +8,9 @@ public class Cusomter
   public int Id { get; set; }
   public Address Location { get; set; }
   public Address HomeLocation { get; set; }
+  
+  [Contained]
+  public Order OrderLine { get; set; }
 }
 
 public class VipCusomter : Customer
@@ -18,6 +21,13 @@ public class VipCusomter : Customer
 public class City
 {
   public int Id { get; set; }
+}
+
+public class Order
+{
+  public int Id { get; set; }
+  
+  public Address DeliverAddress { get; set; }
 }
 ```
 
@@ -49,8 +59,13 @@ public class UsAddress : Address
 ## Naivgation property binding
 
 ```xml
-<EntitySet Name="Customers" EntityType="System.Web.OData.Builder.Cusomter">
+<EntitySet Name="Customers" EntityType="NS.Cusomter">
    <NavigationPropertyBinding Path="Location/Cityes" Target="CitiesA" />
    <NavigationPropertyBinding Path="HomeLocation/Cityes" Target="CitiesB" />
+   <NavigationPropertyBinding Path="NS.VipCustomer/VipLocation/Cityes" Target="CitiesA" />
+   
+   <NavigationPropertyBinding Path="Location/NS.SubAddress/SubCity" Target="CitiesA" />
+   
+   <NavigationPropertyBinding Path="OrderLine/DeliverAddress/Cityes" Target="CitiesA" />
 </EntitySet>
 ```
