@@ -1,7 +1,7 @@
 
 # CLR models
 
-## Entity typies
+## Entity types
 ```C#
 public class Cusomter
 {
@@ -21,7 +21,7 @@ public class City
 }
 ```
 
-## Complex typies
+## Complex types
 ```C#
 public class Address
 {
