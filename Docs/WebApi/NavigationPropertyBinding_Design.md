@@ -31,3 +31,27 @@ So, the developer can call as:
 .HasManyPath(..).HasRequiredPath().HasManyPath()...
 ```
 
+### Add target binding in BindingPathConfiguration{TStructuralType}
+
+This class also provide the following APIs to add target binding and end the binding path:
+
+```c#
+1. HasManyBinding()
+2. HasRequiredBinding()
+3. HasOptionalBinding()
+```
+
+So, the normal navigation property binding configuration flow is：
+
+1. Call `Has*Path()` from `NavigationSourceConfiguration{TEntityType}`
+2. Continue to Call `Has*Path()` from the above returned object 
+3. Repeat step-2 if necessary
+4. Call `Has*Binding()` to add the target navigation source.
+
+Here's an example:
+
+```C#
+customers.HasRequiredPath(c => c.Pet)
+         .HasRequiredPath((Human p) => p.HumanAddress)
+         .HasRequiredBinding(c => c.SubCity, "SubCities");
+```
