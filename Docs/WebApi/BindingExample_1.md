@@ -36,7 +36,7 @@ public class Geography
 }
 ```
 
-We can do as follows to add navigation property binding:
+# Add navigation property binding:
 
 ```C#
 
