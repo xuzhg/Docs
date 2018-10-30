@@ -19,11 +19,11 @@ Along with more and more customers upgrade from ODL v6.x to ODL v7.x, they compl
 
 Below is the main inheritance of the ODataValue vs ODataItem in ODL v6.x.
 
-![Category overview screenshot](images/ODLv6xInheritance.png "ODL v6.x ODataValue and ODataItem")
+![Category overview screenshot](../../images/ODLv6xInheritance.png "ODL v6.x ODataValue and ODataItem")
 
 Below is the main inheritance of the ODataValue vs ODataItem in ODL v7.x.
 
-![Category overview screenshot](images/ODLv7xInheritance.png "ODL v6.x ODataValue and ODataItem")
+![Category overview screenshot](../../images/ODLv7xInheritance.png "ODL v6.x ODataValue and ODataItem")
 
 The main changes are:
 1.	ODataComplexValue is removed.
