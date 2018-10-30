@@ -23,11 +23,23 @@ Below is the main inheritance of the ODataValue vs ODataItem in ODL v6.x.
 
 Below is the main inheritance of the ODataValue vs ODataItem in ODL v7.x.
 
-![Category overview screenshot](../../images/ODLv7xInheritance.png "ODL v6.x ODataValue and ODataItem")
+![Category overview screenshot](../../images/ODLv7xInheritance.png "ODL v7.x ODataValue and ODataItem")
 
 The main changes are:
 1.	ODataComplexValue is removed.
 2.	ODataValue is derived from ODataItem.
+
+###	SOLUTION
+
+a.	Avoid introducing breaking changes, we will add three new classes:
+1)	ODataStructuredValue: (abstract, derived from ODataValue)
+2)	ODataComplexValue: (concrete, derived from ODataStructuredValue)
+3)	ODataEntityValue: (concrete, derived from ODataStructuredValue)
+ As below:
+![Category overview screenshot](../../images/ODLv7xInheritance3Classes.png "ODL v7.x three new classes")
+
+B. or just create a class, for example `ODataObjectValue` or `ODataResourceValue`.
+![Category overview screenshot](../../images/ODLv7xInheritance1Class.png "ODL v7.x 1 new class")
 
 ##	MAIN WORKS
 ###	ADD NEW CLASSES
