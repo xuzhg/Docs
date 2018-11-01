@@ -25,93 +25,69 @@ Below is the main inheritance of the ODataValue vs ODataItem in ODL v7.x.
 
 ![Category overview screenshot](../../images/ODLv7xInheritance.png "ODL v7.x ODataValue and ODataItem")
 
-The main changes are:
+The main changes from v6.x to v7.x are:
 1.	ODataComplexValue is removed.
 2.	ODataValue is derived from ODataItem.
 
 ###	SOLUTION
 
-a.	Avoid introducing breaking changes, we will add three new classes:
-1)	ODataStructuredValue: (abstract, derived from ODataValue)
-2)	ODataComplexValue: (concrete, derived from ODataStructuredValue)
-3)	ODataEntityValue: (concrete, derived from ODataStructuredValue)
- As below:
-![Category overview screenshot](../../images/ODLv7xInheritance3Classes.png "ODL v7.x three new classes")
+Avoid introducing breaking changes, we will add three new classes:
+1)	ODataResourceOrSetValue: (abstract, derived from ODataValue)
+2)	ODataResourceValue: (concrete, derived from ODataResourceOrSetValue)
+3)	ODataResourceSetValue: (concrete, derived from ODataResourceOrSetValue)
+4) ODataNestedResourceItem: (concrete, derived from ODataItem)
 
-B. or just create a class, for example `ODataObjectValue` or `ODataResourceValue`.
-![Category overview screenshot](../../images/ODLv7xInheritance1Class.png "ODL v7.x 1 new class")
+ As below:
+![Category overview screenshot](../../images/ODLv7xInheritanceClasses.png "ODL v7.x new classes")
 
 ##	MAIN WORKS
 ###	ADD NEW CLASSES
 
 We will add the following three new classes:
 ```C#
-public abstract class ODataStructuredValue : ODataValue
+public abstract class ODataResourceOrSetValue : ODataValue
 {
-        public IEnumerable<ODataProperty> Properties
-        {
-            get;
-            set;
-        }
-
-        public string TypeName
-        {
-            get;
-            set;
-        }
+    // nothing here.
 }
 
-public class ODataComplexValue : ODataStructuredValue
-{ }
-
-public class ODataEntityValue : ODataStructuredValue
-{ }
-```
-Or:
-We can create a single new class:
-```C#
-public class ODataObjectValue : ODataValue
+public sealed class ODataNestedResourceItem : ODataItem
 {
-    public IEnumerable<ODataProperty> Properties
-    {
-        get;
-        set;
-    }
+  public ODataNestedResourceInfo NestedResourceInfo { get; set; }
+  public ODataResourceOrSetValue NestedResourceOrSet { get; set; }
+}
+    
+public sealed class ODataResourceValue : ODataResourceOrSetValue
+{
+   public ODataResource Resource { get; set; }
+   public ODataNestedResourceItem NestedItem { get; set; }
+}
 
-    public string TypeName
-    {
-        get;
-        set;
-    }
+public sealed class ODataResourceSetValue : ODataResourceOrSetValue
+{
+   public ODataResourceSet ResourceSet { get; set; }
+   public IEnumerable<ODataResourceValue> Items { get; set; }
 }
 ```
-Or, use `ODataResourceValue`. Supposed, we use “ODataObjectValue” in the design.
+Below is the structure of these classes:
+![Category overview screenshot](../../images/ODLv7InheritanceResourceOrSetValue.png "ODL v7.x new classes")
 
-
-###	Convert ODatObjectValue to Url literal 
-We should convert the `ODataObjectValue` to JSON url literal. Same as:
+###	Convert `ODataResourceOrSetValue` to Url literal 
+We should convert the `ODataResourceOrSetValue` to JSON url literal. Same as:
 {
    “propertyName”: “propertyValue”
 }
 
-###	Convert Url literal to `ODatObjectValue`
-We should read the JSON url literal, convert to `ODataObjectValue`
+###	Convert Url literal to `ODataResourceOrSetValue`
+We should read the JSON url literal, convert to `ODataResourceOrSetValue`
 
-###	Support the collection of ODataObjectValue
-We should support `ODataCollectionValue` to accept the `ODataObjectValue` as element.
+###	Support the collection of `ODataResourceOrSetValue`
+We should support `ODataCollectionValue` to accept the `ODataResourceOrSetValue` as element.
 
-###	Convert between `ODataResource` and `ODataObjectValue`
+###	Convert between `ODataResource` and `ODataResourceValue`
 
-We can covert between `ODataResource` and `ODataObjectValue`, but only for the properties.
+We can covert between `ODataResource` and `ODataResourceValue`.
 
-###	Write `ODataResource`
+###	Convert between `ODataResourceSet` and `ODataResourceSetValue`
 
-`ODataResource` can have `ODataObjectValue` property or collection of it.
-How about if the `ODataObjectValue` is the entity?
+We can covert between `ODataResourceSet` and `ODataResourceSetValue`.
 
-###	Read `ODataResource`
-
-When reading the resource with nested resource, do we read it into `ODataObjectValue` or `ODataResource`?
-1.	If it’s entity (navigation property), read as `ODataResource`
-2.	If it’s complex with NP, read as `ODataResource`
-3.	If it’s complex without NP, read as `ODataObjectValue`? How about if the nested complex has navigation property?
