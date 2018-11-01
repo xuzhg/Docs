@@ -91,3 +91,8 @@ We can covert between `ODataResource` and `ODataResourceValue`.
 
 We can covert between `ODataResourceSet` and `ODataResourceSetValue`.
 
+## Open questions
+
+1. Why do we derive ODataNestedResourceItem from ODataItem?
+
+2. Why do we create ODataResourceSetValue? can we use "ODataCollectionValue" for that?
