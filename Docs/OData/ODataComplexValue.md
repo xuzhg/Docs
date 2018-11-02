@@ -59,7 +59,7 @@ public sealed class ODataNestedResourceItem : ODataItem
 public sealed class ODataResourceValue : ODataResourceOrSetValue
 {
    public ODataResource Resource { get; set; }
-   public ODataNestedResourceItem NestedItem { get; set; }
+   public IList<ODataNestedResourceItem> NestedItem { get; set; }
 }
 
 public sealed class ODataResourceSetValue : ODataResourceOrSetValue
