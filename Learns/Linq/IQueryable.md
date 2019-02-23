@@ -29,7 +29,7 @@ public interface IQueryable<T> : IEnumerable<T>, IQUeryable, IEnumerable
 
 All standard query methods are defined in static class `System.Linq.Querable` :
 
-![Enuerable overview screenshot](../../images/linq/Queryable_class_snapshot.png "Linq to SQL extension methods")
+![Enuerable overview screenshot](../../Images/linq/Queryable_class_snapshot.png "Linq to SQL extension methods")
 
 Below is one of implementation:
 ```C#

@@ -9,7 +9,7 @@ Materials:
 * LINQ to Entities
 * ...
 
-![Enuerable overview screenshot](../../images/linq/Linq_providers.png "Linq to providers")
+![Enuerable overview screenshot](../../Images/linq/Linq_providers.png "Linq to providers")
 
 ## Linq in Action
 

@@ -15,7 +15,7 @@ public interface IEnumerable<T> : IEnumerable
 
 All standard query methods are defined in static class `System.Linq.Enumerable` :
 
-![Enuerable overview screenshot](../../images/linq/Enumerable_class_snapshot.png "Linq to Objects extension methods")
+![Enuerable overview screenshot](../../Images/linq/Enumerable_class_snapshot.png "Linq to Objects extension methods")
 
 Below is one implementation:
 ```C#
