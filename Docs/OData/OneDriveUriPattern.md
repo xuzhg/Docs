@@ -4,3 +4,4 @@ OneDrive has scenarios where a segment representing a drive path needs to be ins
 
 See example at: https://docs.microsoft.com/en-us/graph/api/driveitem-list-children?view=graph-rest-1.0
 
+![Category overview screenshot](../../Images/odata/onedrivepattern.png "ODL OneDrive Uri pattern")
