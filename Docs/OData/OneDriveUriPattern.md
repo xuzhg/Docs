@@ -57,6 +57,8 @@ So far, we create the following validations for a bound function which is annota
 
 ## OData Uri parser
 
+### Basica usage
+
 Let's use the above CSDL as model:
 
 All of us know that if customer follows up the standard odata Uri, customer should call the function like:
@@ -71,9 +73,9 @@ Now, the customer can use new Uri pattern to do the same function call as:
 GET ~/Users({key}):/abc
 ```
 
-The Uri parser returns the same OData path of the normal function call.
+The Uri parser returns the same OData path for the above two Uris.
 
-Besides, it also supports composable functions, below lists some scenarios:
+Besides, it also supports more complicated scenarios:
 
 ### Non-Composable function
 
@@ -90,6 +92,7 @@ Besides, it also supports composable functions, below lists some scenarios:
 | `~/Users(1):/photos/2018/February:` | `~/Users(1)/NS.Function2(path='photos/2018/February')` |
 | `~/Users(1):/abc:/Name` | `~/Users(1)/NS.Function2(path='abc')/Name` |
 | `~/Users(1):/abc::/xyz` | `~/Users(1)/NS.Function2(path='abc')/NS.Function2(path='xyz')` |
+| `~/Users(1):/abc:/:/xyz` | `~/Users(1)/NS.Function2(path='abc')/NS.Function2(path='xyz')` |
 
 Where, 
 * `Function1` is an escape **non-composable** bound function
