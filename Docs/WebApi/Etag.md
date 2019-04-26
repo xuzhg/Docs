@@ -169,7 +169,7 @@ Let's postpone this functionality.
 </EntityContainer>
 ```
 
-## 8. ETag on sub collection property of non-containment navigation property type
+## 9. ETag on sub collection property of non-containment navigation property type
 
 ```xml
 <EntityType Name="City">
