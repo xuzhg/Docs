@@ -20,7 +20,7 @@ Task Invoke(HttpContext httpContext)
     // The return value is written to the response
     // Since it's string, the context type is 'text/plain'
     httpContext.Response.ContentType ??= "text/plain; charset=utf-8";
-    return httpContext.Response.WriteAsync(text);
+    return httpContext.Response.WriteAsync(result);
 }
 ```
 
