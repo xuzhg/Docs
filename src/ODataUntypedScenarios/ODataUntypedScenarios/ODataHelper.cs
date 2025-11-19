@@ -51,14 +51,15 @@ namespace ODataUntypedScenarios
             }
         }
 
-        public static void ReadResource(string payload, IEdmModel model, IEdmEntitySet set, IEdmEntityType type, Action<ODataReader> readAction, bool readUntypedAsString)
+        public static void ReadResource(string payload, IEdmModel model, IEdmEntitySet set, IEdmEntityType type, Action<ODataReader> readAction, bool readUntypedAsString, bool enableUntypedCollection = false)
         {
 #pragma warning disable CS0618 // Type or member is obsolete
             ODataMessageReaderSettings readerSettings = new ODataMessageReaderSettings
             {
                 BaseUri = new Uri("http://localhost"),
                 ShouldIncludeAnnotation = s => true,
-                ReadUntypedAsString = readUntypedAsString
+                ReadUntypedAsString = readUntypedAsString,
+                EnableUntypedCollections = enableUntypedCollection
             };
 #pragma warning restore CS0618 // Type or member is obsolete
 

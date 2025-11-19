@@ -100,7 +100,7 @@ namespace ODataUntypedScenarios
             }
         }
 
-        public static void PlayResourceSetScenario((IEdmModel, IEdmEntitySet, IEdmEntityType) odata, bool readUntypedAsString)
+        public static void PlayResourceSetScenario((IEdmModel, IEdmEntitySet, IEdmEntityType) odata, bool readUntypedAsString, bool enableUntypedCollection = false)
         {
             string payload = @"{""@odata.context"":""http://localhost/$metadata#Customers/$entity"",
   ""Id"":42,
@@ -154,13 +154,13 @@ namespace ODataUntypedScenarios
                         break;
                 }
 
-            }, readUntypedAsString);
+            }, readUntypedAsString, enableUntypedCollection);
 
-            PrintResource(top, readUntypedAsString, "");
+            PrintResource(top, readUntypedAsString, "  ", enableUntypedCollection);
 
             if (collectionItems == null)
             {
-                Console.WriteLine("nested resource set is null: collectionItems == null");
+                Console.WriteLine("  nested resource set is null: collectionItems == null");
             }
             else
             {
@@ -168,7 +168,7 @@ namespace ODataUntypedScenarios
                 {
                     if (item is ODataResource resource)
                     {
-                        PrintResource(resource, readUntypedAsString, "    ");
+                        PrintResource(resource, readUntypedAsString, "    ", enableUntypedCollection);
                     }
                     else if (item is ODataPrimitiveValue primitiveValue)
                     {
@@ -182,7 +182,8 @@ namespace ODataUntypedScenarios
             }
         }
 
-        private static void PrintResource(ODataResource? resource, bool readUntypedAsString, string indent)
+
+        private static void PrintResource(ODataResource? resource, bool readUntypedAsString, string indent, bool enableUntypedCollection = false)
         {
             if (resource == null)
             {
@@ -190,10 +191,28 @@ namespace ODataUntypedScenarios
                 return;
             }
 
-            Console.WriteLine($"{indent}Resource of type {resource.TypeName} as readUntypedAsString = {readUntypedAsString}:");
+            Console.WriteLine($"{indent}Resource of type {resource.TypeName} as readUntypedAsString = {readUntypedAsString}, enableUntypedCollection = {enableUntypedCollection}:");
             foreach (var property in resource.Properties.OfType<ODataProperty>())
             {
-                if (property.Value is ODataUntypedValue untypedValue)
+                if (property.Value is ODataCollectionValue collectionValue)
+                {
+                    Console.WriteLine($"{indent}  Property {property.Name}: ODataCollectionValue of type {collectionValue.TypeName} with {collectionValue.Items.Count()} items:");
+
+                    int index = 1;
+                    foreach (var item in collectionValue.Items)
+                    {
+                        if (item is ODataUntypedValue untypedValue)
+                        {
+                            Console.WriteLine($"{indent}{indent}  Item # {index}: ODataUntypedValue with RawValue = {untypedValue.RawValue} ({untypedValue.RawValue?.GetType().Name ?? "null"})");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{indent}{indent}  Item # {index}: {item} ({item?.GetType().Name ?? "null"})");
+                        }
+                        index++;
+                    }
+                }
+                else if (property.Value is ODataUntypedValue untypedValue)
                 {
                     Console.WriteLine($"{indent}  Property {property.Name}: ODataUntypedValue with RawValue = {untypedValue.RawValue} ({untypedValue.RawValue?.GetType().Name ?? "null"})");
                 }

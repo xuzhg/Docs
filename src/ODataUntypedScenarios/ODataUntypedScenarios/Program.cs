@@ -29,6 +29,8 @@ ODataUntypedCases.PlayResourceScenario(odata, false);
 
 Console.WriteLine("\n=== ResourceSet scenario with untyped values ===\n");
 
-ODataUntypedCases.PlayResourceSetScenario(odata, true);
+ODataUntypedCases.PlayResourceSetScenario(odata, true, true);
+ODataUntypedCases.PlayResourceSetScenario(odata, true, false);
 
-ODataUntypedCases.PlayResourceSetScenario(odata, false);
+ODataUntypedCases.PlayResourceSetScenario(odata, false, true);
+ODataUntypedCases.PlayResourceSetScenario(odata, false, false);
