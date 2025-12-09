@@ -106,7 +106,7 @@ propertyInfo != null; // can retrieve the annotation from `nested property info`
 2. For without content, we'd fix the exception if the property is undelcared.
 
 
-## Designs for `null` value
+## Designs for problem of `null` value
 Let's see the writing process first here:
 https://github.com/OData/odata.net/blob/main/src/Microsoft.OData.Core/Json/ODataJsonWriter.cs#L371-L379
 ```C#
@@ -148,6 +148,6 @@ the instance annotations as annotation within the resource (aka, "proeprty": { "
 In writing, any annotations on `ODataNestedResourceInfo` are written as property annotation, otherwise, the annotations on `ODataResource` are written as resource annotations.
 
 
-## Designs for `null` value
+## Designs for problem of without value
 
 For the undeclared nested resource without content, let's output the 'ODataReaderState.ODataNestedProperty'. This keeps consistent between declared and undeclared.
