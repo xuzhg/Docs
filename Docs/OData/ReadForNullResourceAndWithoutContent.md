@@ -102,5 +102,52 @@ propertyInfo != null; // can retrieve the annotation from `nested property info`
 ```
 
 # Problems
-1. For `null` null, we'd figure out a solution to retrieve the annotations
+1. For `null` value, we'd figure out a solution to retrieve the annotations
 2. For without content, we'd fix the exception if the property is undelcared.
+
+
+## Designs for `null` value
+Let's see the writing process first here:
+https://github.com/OData/odata.net/blob/main/src/Microsoft.OData.Core/Json/ODataJsonWriter.cs#L371-L379
+```C#
+ODataNestedResourceInfo parentNavLink = this.ParentNestedResourceInfo;
+if (parentNavLink != null)
+{
+    // For a null value, write the type as a property annotation
+    if (resource == null)
+    {
+        if (parentNavLink.TypeAnnotation != null && parentNavLink.TypeAnnotation.TypeName != null)
+        {
+            this.odataAnnotationWriter.WriteODataTypePropertyAnnotation(parentNavLink.Name, parentNavLink.TypeAnnotation.TypeName);
+        }
+
+        this.instanceAnnotationWriter.WriteInstanceAnnotations(parentNavLink.GetInstanceAnnotations(), parentNavLink.Name);
+    }
+
+    // Write the property name of an expanded navigation property to start the value.
+    this.jsonWriter.WriteName(parentNavLink.Name);
+}
+
+if (resource == null)
+{
+    this.jsonWriter.WriteValue((string)null);
+    return;
+}
+```
+
+It says, if the resource is 'null', let's write the annotation from 'NestedResourceInfo` by calling `GetInstanceAnnotations()`. 
+That's good. It's clear that:
+1) ODataNestedResourceInfo can contain the annotations for the nested resource.
+2) `GetInstanceAnnotations()` and `SetInstanceAnnotations()` are internal, so there's no public way to specify the annotations on ODataNestedResourceInfo.
+
+In this case, I think we can expose the functionalites to add/retrieve annotations on `ODataNestedResourceInfo`.
+
+In reading, the instance annotations as property annotation (aka, "propertyname@...": ...) are saved into 'ODataNestedResourceInfo` except the control metadatas (aka, @odata.type).
+the instance annotations as annotation within the resource (aka, "proeprty": { "@...": ... }) are saved into 'ODataResource' directly, this keeps back-compatible.
+
+In writing, any annotations on `ODataNestedResourceInfo` are written as property annotation, otherwise, the annotations on `ODataResource` are written as resource annotations.
+
+
+## Designs for `null` value
+
+For the undeclared nested resource without content, let's output the 'ODataReaderState.ODataNestedProperty'. This keeps consistent between declared and undeclared.
