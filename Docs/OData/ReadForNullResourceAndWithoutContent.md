@@ -91,8 +91,8 @@ propertyInfo == null;
 
 3. without content
 
-If `location` is undeclared (dynamic) property, throw exception.
-If `location` is declared property, we have the following:
+- If `location` is undeclared (dynamic) property, throw exception.
+- If `location` is declared property, we have the following:
 
 ```C#
 topLevel != null;
